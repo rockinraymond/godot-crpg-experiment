@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://rh216f4r8f33"]
+
+[ext_resource type="Texture2D" uid="uid://dvskwak1k4ht5" path="res://enviroments/grassland/sprites/seasons_trees.png" id="1_wh3j2"]
+
+[node name="Tree" type="Node2D"]
+y_sort_enabled = true
+
+[node name="TrunkSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("1_wh3j2")
+region_enabled = true
+region_rect = Rect2(496, 552, 96, 80)
+
+[node name="TopSprite" type="Sprite2D" parent="."]
+z_index = 2
+position = Vector2(-16, -184)
+texture = ExtResource("1_wh3j2")
+region_enabled = true
+region_rect = Rect2(392, 320, 272, 232)

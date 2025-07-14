@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://3hv1gw6nlpf2"]
+
+[ext_resource type="Texture2D" uid="uid://dtay81xcb56gg" path="res://enviroments/grassland/sprites/seasons_tiles.png" id="1_g4yaj"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g4yaj"]
+polygon = PackedVector2Array(0, -100, -67, -68, -66, 0, -1, 33, 66, -2, 64, -67)
+
+[node name="TilesetEdit" type="Node2D"]
+
+[node name="Stump" type="Sprite2D" parent="."]
+position = Vector2(-1, 166)
+texture = ExtResource("1_g4yaj")
+region_enabled = true
+region_rect = Rect2(512, 128, 128, 64)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Stump"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stump/StaticBody2D"]
+polygon = PackedVector2Array(-64, 0, 0, 32, 64, 0, 0, -32)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Stump"]
+visible = false
+occluder = SubResource("OccluderPolygon2D_g4yaj")
+
+[node name="Boulder" type="Sprite2D" parent="."]
+position = Vector2(-2, 332)
+texture = ExtResource("1_g4yaj")
+region_enabled = true
+region_rect = Rect2(768, 128, 128, 64)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Boulder"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boulder/StaticBody2D"]
+polygon = PackedVector2Array(-64, 0, 0, 32, 64, 0, 0, -32)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Boulder"]
+visible = false
+occluder = SubResource("OccluderPolygon2D_g4yaj")

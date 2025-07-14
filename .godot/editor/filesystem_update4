@@ -1,0 +1,6 @@
+res://characters/scenes/human.tscn
+res://enviroments/grassland/tileset.tres
+res://characters/scenes/human.gd
+res://grassland.tscn
+res://enviroments/grassland/tileset_edit.tscn
+res://enviroments/grassland/tree.tscn

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxeb53wctfhuy"]
+
+[ext_resource type="Texture2D" uid="uid://dvskwak1k4ht5" path="res://enviroments/grassland/sprites/seasons_trees.png" id="1_ubaf0"]
+
+[node name="TreeStump" type="Node2D"]
+y_sort_enabled = true
+position = Vector2(-16, 0)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 16)
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(0, -40)
+texture = ExtResource("1_ubaf0")
+region_enabled = true
+region_rect = Rect2(392, 320, 272, 232)
