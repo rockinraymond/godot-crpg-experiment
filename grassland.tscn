@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=4 uid="uid://cb1qsbhj1ov4y"]
+[gd_scene load_steps=7 format=4 uid="uid://cb1qsbhj1ov4y"]
 
 [ext_resource type="TileSet" uid="uid://dwv2sfmcrqmu7" path="res://enviroments/grassland/tileset.tres" id="1_16t0a"]
-[ext_resource type="PackedScene" uid="uid://bb25ucwik0mxf" path="res://characters/scenes/human.tscn" id="3_l7u1w"]
+[ext_resource type="PackedScene" uid="uid://bb25ucwik0mxf" path="res://characters/scenes/human/player-human.tscn" id="3_l7u1w"]
+[ext_resource type="PackedScene" uid="uid://154t20qrgtht" path="res://characters/scenes/npc-human/npc-human.tscn" id="4_l7u1w"]
 [ext_resource type="PackedScene" uid="uid://rh216f4r8f33" path="res://enviroments/grassland/tree.tscn" id="4_w2vwg"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_16t0a"]
@@ -86,3 +87,12 @@ polygon = PackedVector2Array(888, 128, 824, 160, 760, 128, 824, 96)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NavigationRegion2D/StaticBody2D8"]
 position = Vector2(-56, 184)
 polygon = PackedVector2Array(888, 128, 824, 160, 760, 128, 824, 96)
+
+[node name="HumanNPC" parent="." instance=ExtResource("4_l7u1w")]
+position = Vector2(1030, 286)
+
+[node name="HumanNPC2" parent="." instance=ExtResource("4_l7u1w")]
+position = Vector2(923, -270)
+
+[node name="HumanNPC3" parent="." instance=ExtResource("4_l7u1w")]
+position = Vector2(1314, -96)

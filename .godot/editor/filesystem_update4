@@ -1,6 +1,6 @@
-res://characters/scenes/human.tscn
+res://characters/scenes/human/player-human.tscn
 res://enviroments/grassland/tileset.tres
-res://characters/scenes/human.gd
 res://grassland.tscn
-res://enviroments/grassland/tileset_edit.tscn
 res://enviroments/grassland/tree.tscn
+res://characters/scenes/npc-human/npc-human.tscn
+res://characters/scenes/human/player-human.gd
