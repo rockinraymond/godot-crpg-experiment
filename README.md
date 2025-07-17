@@ -1,31 +1,21 @@
-# Isometric Game
+# Godot CRPG Experiment
 
-This demo shows a traditional isometric view with depth sorting.
+This project is my own personal experimental/sandbox project for implementing a 2d Isometric CRPG in the Godot engine.
 
-A character can move around the level and will also slide around objects,
-as well as be occluded when standing in front or behind them.
+## Reference/Inspiration
 
-Language: GDScript
+This project is based off the following two projects availible on godot asset library:
+	
+Isometric Game Demo: https://godotengine.org/asset-library/asset/2718
+2D CRPG Character Controller: https://godotengine.org/asset-library/asset/3869
 
-Renderer: Compatibility
+I will update this list as more example projects are utilized
 
-Check out this demo on the asset library: https://godotengine.org/asset-library/asset/112
+## Art Assets used
+I am using a varity of assets that can be found on the OpenGameArt website, the links to assets used in this project are found below:
 
-## How does it work?
+https://opengameart.org/content/64x128-isometric-tiles-grassland-seasons
+https://opengameart.org/content/400-items-basehumanmale-orc-skeleton
 
-The level uses a [`TileMap`](https://docs.godotengine.org/en/latest/classes/class_tilemap.html#class-tilemap)
-in which the tiles have different vertical offsets.
-The walls, doors, and pillars each have
-[`StaticBody2D`](https://docs.godotengine.org/en/latest/classes/class_staticbody2d.html)
-and [`CollisionPolygon2D`](https://docs.godotengine.org/en/latest/classes/class_collisionpolygon2d.html)
-at their base. The player also has a collider at its base,
-which makes the player collide with the level.
 
-2D lighting effects are achieved using a mixture of PointLight2D nodes (which provide real-time shadows)
-and pre-placed Polygon2Ds with sprites. To provide additional ambient shading, the goblin also has a blob
-shadow below its feet (a Sprite2D with a texture).
-
-## Screenshots
-
-![Screenshot](screenshots/isometric.webp)
 #
