@@ -7,6 +7,7 @@ This project is my own personal experimental/sandbox project for implementing a 
 This project is based off the following two projects availible on godot asset library:
 	
 Isometric Game Demo: https://godotengine.org/asset-library/asset/2718
+
 2D CRPG Character Controller: https://godotengine.org/asset-library/asset/3869
 
 I will update this list as more example projects are utilized
@@ -15,6 +16,7 @@ I will update this list as more example projects are utilized
 I am using a varity of assets that can be found on the OpenGameArt website, the links to assets used in this project are found below:
 
 https://opengameart.org/content/64x128-isometric-tiles-grassland-seasons
+
 https://opengameart.org/content/400-items-basehumanmale-orc-skeleton
 
 
