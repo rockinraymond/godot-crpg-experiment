@@ -47,15 +47,22 @@ var anim_directions = {
 }
 
 func update_animation(anim_set):
-
 	var angle = rad_to_deg(last_direction.angle()) + 22.5
 	var slice_dir = floor(angle / 45)
+	var anim_name = anim_directions[anim_set][slice_dir][0]
+	var flip_h = anim_directions[anim_set][slice_dir][1]
 
-	$BaseSprite.play(anim_directions[anim_set][slice_dir][0])
-	$BaseSprite.flip_h = anim_directions[anim_set][slice_dir][1]
-	
-	$BaseSprite/Chest_LeatherSprite.play(anim_directions[anim_set][slice_dir][0])
-	$BaseSprite/Chest_LeatherSprite.flip_h = anim_directions[anim_set][slice_dir][1]
+	# Animate BaseSprite itself
+	$BaseSprite.play(anim_name)
+	$BaseSprite.flip_h = flip_h
+
+	# Animate all visible child sprites of BaseSprite
+	for child in $BaseSprite.get_children():
+		if child is AnimatedSprite2D and child.visible:
+			child.play(anim_name)
+			child.flip_h = flip_h
+
+
 
 func _ready():
 	assert(nav_agent)
