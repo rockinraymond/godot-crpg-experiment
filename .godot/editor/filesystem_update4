@@ -1,7 +1,9 @@
-res://characters/scenes/human/player-human.tscn
+res://characters/scenes/npc-human/npc-human.tscn
 res://enviroments/grassland/tileset.tres
+res://characters/scenes/human/player-human.tscn
 res://grassland.tscn
 res://enviroments/grassland/tree.tscn
-res://characters/scenes/npc-human/npc-human.tscn
 res://characters/scenes/human/player-human.gd
-res://README.md
+res://characters/scenes/npc-human/interactable_component.gd
+res://characters/scenes/human/camera_zoom.gd
+res://characters/scenes/npc-human/npc-human.gd

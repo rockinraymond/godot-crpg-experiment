@@ -1,4 +1,4 @@
-[gd_scene load_steps=370 format=3 uid="uid://bb25ucwik0mxf"]
+[gd_scene load_steps=371 format=3 uid="uid://bb25ucwik0mxf"]
 
 [ext_resource type="Script" uid="uid://unssa7uaur7h" path="res://characters/scenes/human/player-human.gd" id="1_njo2g"]
 [ext_resource type="Texture2D" uid="uid://coc1t37fm3qu2" path="res://characters/sprites/BaseHumanMale/1_Idle_CAM2_20.png" id="2_njo2g"]
@@ -361,6 +361,7 @@
 [ext_resource type="Texture2D" uid="uid://dlw6i7p0jioly" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_196.png" id="359_5kma5"]
 [ext_resource type="Texture2D" uid="uid://cb4nl7hlfimri" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_198.png" id="360_4hr7l"]
 [ext_resource type="Texture2D" uid="uid://c4b3mdi336skl" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_200.png" id="361_li7qt"]
+[ext_resource type="Script" uid="uid://3p83fec76pdq" path="res://characters/scenes/human/camera_zoom.gd" id="362_t2yc1"]
 
 [sub_resource type="Gradient" id="662"]
 offsets = PackedFloat32Array(0.00558659, 0.441341, 0.659218)
@@ -1705,9 +1706,9 @@ radius = 7.0
 height = 26.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2pgh5"]
-radius = 22.2036
+radius = 45.0444
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wbwxh"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_t2yc1"]
 
 [node name="Human" type="CharacterBody2D" node_paths=PackedStringArray("nav_agent", "interaction_area", "shapecast")]
 script = ExtResource("1_njo2g")
@@ -1733,7 +1734,6 @@ sprite_frames = SubResource("SpriteFrames_2fwhf")
 animation = &"front_idle"
 
 [node name="Pants_PatchyPants" type="AnimatedSprite2D" parent="BaseSprite"]
-scale = Vector2(1, 1)
 sprite_frames = SubResource("SpriteFrames_jdhwx")
 animation = &"front_idle"
 
@@ -1743,15 +1743,23 @@ rotation = 1.5708
 shape = SubResource("1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("362_t2yc1")
+zoom_limit = Vector2(0.7, 1.2)
+zoom_factor = 0.075
+smoothing = false
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [node name="InteractionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-position = Vector2(-1, -7)
+position = Vector2(-1, -35)
 shape = SubResource("CircleShape2D_2pgh5")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
-shape = SubResource("CircleShape2D_wbwxh")
+scale = Vector2(0.1, 0.1)
+shape = SubResource("CircleShape2D_t2yc1")
 target_position = Vector2(0, 0)
+collide_with_areas = true
+
+[connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]

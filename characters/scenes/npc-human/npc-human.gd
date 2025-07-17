@@ -52,7 +52,7 @@ func _physics_process(_delta):
 		return
 
 	var next_pos = nav_agent.get_next_path_position()
-	var velocity = global_position.direction_to(next_pos) * movement_speed
+	velocity = global_position.direction_to(next_pos) * movement_speed
 
 	if nav_agent.avoidance_enabled:
 		nav_agent.set_velocity(velocity)
@@ -82,7 +82,7 @@ func _on_velocity_computed(safe_velocity: Vector2):
 	move_and_slide()
 
 func _set_random_target():
-	var radius = 100.0
+	var radius = 300.0
 	var offset = Vector2(randf() * radius, randf() * radius) - Vector2(radius / 2, radius / 2)
 	nav_agent.set_target_position(global_position + offset)
 

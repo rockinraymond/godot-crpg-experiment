@@ -1,4 +1,4 @@
-[gd_scene load_steps=128 format=3 uid="uid://154t20qrgtht"]
+[gd_scene load_steps=129 format=3 uid="uid://154t20qrgtht"]
 
 [ext_resource type="Script" uid="uid://bqh47bo07fro0" path="res://characters/scenes/npc-human/npc-human.gd" id="1_xrima"]
 [ext_resource type="Texture2D" uid="uid://coc1t37fm3qu2" path="res://characters/sprites/BaseHumanMale/1_Idle_CAM2_20.png" id="2_q6nty"]
@@ -121,6 +121,7 @@
 [ext_resource type="Texture2D" uid="uid://bomtfj1vmgvep" path="res://characters/sprites/BaseHumanMale/5_Walk_CAM5_196.png" id="119_es0ci"]
 [ext_resource type="Texture2D" uid="uid://mvs2kdbw1fa7" path="res://characters/sprites/BaseHumanMale/5_Walk_CAM5_198.png" id="120_fa3oi"]
 [ext_resource type="Texture2D" uid="uid://jgvrqmct8vmj" path="res://characters/sprites/BaseHumanMale/5_Walk_CAM5_200.png" id="121_q56rx"]
+[ext_resource type="Script" uid="uid://dfevogbvtp2jl" path="res://characters/scenes/npc-human/interactable_component.gd" id="122_pywaa"]
 
 [sub_resource type="Gradient" id="662"]
 offsets = PackedFloat32Array(0.00558659, 0.441341, 0.659218)
@@ -578,10 +579,11 @@ animations = [{
 radius = 7.0
 height = 26.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_2pgh5"]
-radius = 22.2036
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_wbwxh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hi64o"]
+radius = 22.0
+height = 78.0
 
 [node name="HumanNPC" type="CharacterBody2D" node_paths=PackedStringArray("nav_agent")]
 script = ExtResource("1_xrima")
@@ -607,12 +609,14 @@ shape = SubResource("1")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
-[node name="InteractionArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-position = Vector2(-1, -7)
-shape = SubResource("CircleShape2D_2pgh5")
-
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
 shape = SubResource("CircleShape2D_wbwxh")
 target_position = Vector2(0, 0)
+
+[node name="InteractableComponent" type="Area2D" parent="."]
+script = ExtResource("122_pywaa")
+metadata/_custom_type_script = "uid://cs6cvom3w2uf0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableComponent"]
+position = Vector2(0, -39)
+shape = SubResource("CapsuleShape2D_hi64o")
