@@ -1,30 +1,27 @@
 extends CharacterBody2D
 
-## How fast the player moves
+enum PlayerState {
+	IDLE,
+	MOVING,
+	INTERACTING,
+	MENU_OPEN
+}
+
 @export var movement_speed: float = 150
-
-## The input map action associated with moving and interacting
 @export var pathfind_action: String = "left_click"
-## Amount of time between pathfinding attempts while button is held
+@export var context_action: String = "right_click"
 @export var pathfind_hold_delay: float = 0.5
-
-## A navigation agent
 @export var nav_agent: NavigationAgent2D
-## An area2d representing how close the player must be to interact. Should be 
-## masked to only see interactable objects
 @export var interaction_area: Area2D
-## A shapecast used to find objects under the mouse cursor. Should be masked
-## to only see interactable objects
 @export var shapecast: ShapeCast2D
-
 
 var _delay_timer = Timer.new()
 var _queued_interact = false
-var menuOpen = false
 var last_direction = Vector2(1, 0)
+var state: PlayerState = PlayerState.IDLE
 
 var anim_directions = {
-	"idle": [ # list of [animation name, horizontal flip]
+	"idle": [
 		["side_right_idle", false],
 		["45front_right_idle", false],
 		["front_idle", false],
@@ -34,7 +31,6 @@ var anim_directions = {
 		["back_idle", false],
 		["45back_right_idle", false],
 	],
-
 	"walk": [
 		["side_right_walk", false],
 		["45front_right_walk", false],
@@ -53,95 +49,102 @@ func update_animation(anim_set):
 	var anim_name = anim_directions[anim_set][slice_dir][0]
 	var flip_h = anim_directions[anim_set][slice_dir][1]
 
-	# Animate BaseSprite itself
 	$BaseSprite.play(anim_name)
 	$BaseSprite.flip_h = flip_h
-
-	# Animate all visible child sprites of BaseSprite
 	for child in $BaseSprite.get_children():
 		if child is AnimatedSprite2D and child.visible:
 			child.play(anim_name)
 			child.flip_h = flip_h
-
-
 
 func _ready():
 	assert(nav_agent)
 	assert(interaction_area)
 	assert(shapecast)
 	nav_agent.velocity_computed.connect(Callable(_on_velocity_computed))
-	_delay_timer.wait_time=pathfind_hold_delay
+	_delay_timer.wait_time = pathfind_hold_delay
 	add_child(_delay_timer)
 	_delay_timer.timeout.connect(_on_timeout)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if state == PlayerState.MENU_OPEN:
+		if event.is_action_pressed("menu"):
+			_change_state(PlayerState.IDLE)
+			$InGameMenu.hide()
+		return
+
 	if event.is_action_pressed(pathfind_action):
 		_try_click()
 		_delay_timer.start()
 	if event.is_action_released(pathfind_action):
 		_delay_timer.stop()
 	if event.is_action_pressed("menu"):
-		if menuOpen == false:
-				menuOpen = true
-				$InGameMenu.show()
-		else:
-				menuOpen = false
-				$InGameMenu.hide()
+		_change_state(PlayerState.MENU_OPEN)
+		$InGameMenu.show()
 
-## Called when the player clicks the pathfinding action, attempts to find a new path,
-## or interact with an object if hovering over one
 func _try_click():
 	_queued_interact = false
-	shapecast.global_position=get_global_mouse_position()
+	shapecast.global_position = get_global_mouse_position()
 	shapecast.force_shapecast_update()
 	if shapecast.is_colliding():
 		var collider = shapecast.get_collider(0)
 		if collider is InteractableComponent:
 			if interaction_area.overlaps_area(collider):
+				_change_state(PlayerState.INTERACTING)
 				collider.interact()
 				return
 			else:
 				_queued_interact = collider
 	nav_agent.set_target_position(get_global_mouse_position())
+	_change_state(PlayerState.MOVING)
 
 func _on_timeout():
 	_try_click()
 
 func _physics_process(_delta):
-	# Skip logic if the map hasn't initialized
 	if NavigationServer2D.map_get_iteration_id(nav_agent.get_navigation_map()) == 0:
 		return
-	if nav_agent.is_navigation_finished():
-		update_animation("idle")  # Stop animation when navigation is done
-		return
 
-	# Calculate the movement vector based on navigation target
-	var next_path_position: Vector2 = nav_agent.get_next_path_position()
-	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
-
-	# Apply velocity to nav_agent or manually handle movement
-	if nav_agent.avoidance_enabled:
-		nav_agent.set_velocity(new_velocity)
-	else:
-		_on_velocity_computed(new_velocity)
-
-	# Optional: if you're also using move_and_slide for physics body
-	set_velocity(new_velocity)
-	move_and_slide()
-
-	# Update animation based on movement direction
-	if new_velocity.length() > 0:
-		last_direction = new_velocity
-		update_animation("walk")
-	else:
-		update_animation("idle")
+	match state:
+		PlayerState.IDLE:
+			update_animation("idle")
+		PlayerState.MOVING:
+			if nav_agent.is_navigation_finished():
+				_change_state(PlayerState.IDLE)
+				return
+			var next_path_position: Vector2 = nav_agent.get_next_path_position()
+			var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
+			if nav_agent.avoidance_enabled:
+				nav_agent.set_velocity(new_velocity)
+			else:
+				_on_velocity_computed(new_velocity)
+			set_velocity(new_velocity)
+			move_and_slide()
+			if new_velocity.length() > 0:
+				last_direction = new_velocity
+				update_animation("walk")
+			else:
+				update_animation("idle")
+		PlayerState.INTERACTING:
+			update_animation("idle")
+			# State returns to idle after interaction
+			_change_state(PlayerState.IDLE)
+		PlayerState.MENU_OPEN:
+			# Stop movement and ignore physics while menu open
+			set_velocity(Vector2.ZERO)
+			move_and_slide()
+			update_animation("idle")
 
 func _on_velocity_computed(safe_velocity: Vector2):
 	velocity = safe_velocity
 	move_and_slide()
 
 func _on_interaction_area_area_entered(area: Area2D) -> void:
-	if _queued_interact and _queued_interact==area:
+	if _queued_interact and _queued_interact == area:
 		nav_agent.set_target_position(position)
 		_queued_interact.interact()
-		_queued_interact=false
+		_queued_interact = false
+
+func _change_state(new_state: PlayerState):
+	if state == new_state:
+		return
+	state = new_state
