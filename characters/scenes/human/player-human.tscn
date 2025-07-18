@@ -362,7 +362,7 @@
 [ext_resource type="Texture2D" uid="uid://cb4nl7hlfimri" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_198.png" id="360_4hr7l"]
 [ext_resource type="Texture2D" uid="uid://c4b3mdi336skl" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_200.png" id="361_li7qt"]
 [ext_resource type="Script" uid="uid://3p83fec76pdq" path="res://characters/scenes/human/camera_zoom.gd" id="362_t2yc1"]
-[ext_resource type="PackedScene" uid="uid://cq5bfyaeni3hr" path="res://gui/Menu.tscn" id="363_hloh5"]
+[ext_resource type="PackedScene" uid="uid://cq5bfyaeni3hr" path="res://gui/InGameMenu.tscn" id="363_hloh5"]
 
 [sub_resource type="Gradient" id="662"]
 offsets = PackedFloat32Array(0.00558659, 0.441341, 0.659218)
@@ -1763,14 +1763,7 @@ shape = SubResource("CircleShape2D_t2yc1")
 target_position = Vector2(0, 0)
 collide_with_areas = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Menu" parent="CanvasLayer" instance=ExtResource("363_hloh5")]
+[node name="InGameMenu" parent="." instance=ExtResource("363_hloh5")]
 visible = false
-anchors_preset = -1
-offset_left = 309.0
-offset_top = 106.0
-offset_right = -269.0
-offset_bottom = -112.0
 
 [connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]

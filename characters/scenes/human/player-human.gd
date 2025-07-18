@@ -83,10 +83,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
 		if menuOpen == false:
 				menuOpen = true
-				$CanvasLayer/Menu.show()
+				$InGameMenu.show()
 		else:
 				menuOpen = false
-				$CanvasLayer/Menu.hide()
+				$InGameMenu.hide()
 
 ## Called when the player clicks the pathfinding action, attempts to find a new path,
 ## or interact with an object if hovering over one

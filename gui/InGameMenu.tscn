@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://cq5bfyaeni3hr"]
+
+[ext_resource type="Script" uid="uid://djq7jsg3aods0" path="res://gui/char_name_label.gd" id="1_qhd0x"]
+
+[node name="InGameMenu" type="CanvasLayer"]
+
+[node name="Menu" type="Control" parent="."]
+z_index = 5
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="Menu"]
+layout_mode = 0
+offset_left = 303.0
+offset_top = 95.0
+offset_right = 871.0
+offset_bottom = 525.0
+current_tab = 1
+
+[node name="Character" type="Panel" parent="Menu/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="CharNameLabel" type="Label" parent="Menu/TabContainer/Character"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 18.0
+offset_right = 63.0
+offset_bottom = 41.0
+text = "Name:"
+script = ExtResource("1_qhd0x")
+
+[node name="Inventory" type="Panel" parent="Menu/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Quests" type="Panel" parent="Menu/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[connection signal="ready" from="Menu/TabContainer/Character/CharNameLabel" to="Menu/TabContainer/Character/CharNameLabel" method="_on_ready"]
