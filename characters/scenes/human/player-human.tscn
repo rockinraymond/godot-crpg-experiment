@@ -1,4 +1,4 @@
-[gd_scene load_steps=371 format=3 uid="uid://bb25ucwik0mxf"]
+[gd_scene load_steps=372 format=3 uid="uid://bb25ucwik0mxf"]
 
 [ext_resource type="Script" uid="uid://unssa7uaur7h" path="res://characters/scenes/human/player-human.gd" id="1_njo2g"]
 [ext_resource type="Texture2D" uid="uid://coc1t37fm3qu2" path="res://characters/sprites/BaseHumanMale/1_Idle_CAM2_20.png" id="2_njo2g"]
@@ -362,6 +362,7 @@
 [ext_resource type="Texture2D" uid="uid://cb4nl7hlfimri" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_198.png" id="360_4hr7l"]
 [ext_resource type="Texture2D" uid="uid://c4b3mdi336skl" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_200.png" id="361_li7qt"]
 [ext_resource type="Script" uid="uid://3p83fec76pdq" path="res://characters/scenes/human/camera_zoom.gd" id="362_t2yc1"]
+[ext_resource type="PackedScene" uid="uid://cq5bfyaeni3hr" path="res://gui/Menu.tscn" id="363_hloh5"]
 
 [sub_resource type="Gradient" id="662"]
 offsets = PackedFloat32Array(0.00558659, 0.441341, 0.659218)
@@ -1742,7 +1743,7 @@ position = Vector2(0, -7)
 rotation = 1.5708
 shape = SubResource("1")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PlayerCam" type="Camera2D" parent="."]
 script = ExtResource("362_t2yc1")
 zoom_limit = Vector2(0.7, 1.2)
 zoom_factor = 0.075
@@ -1761,5 +1762,15 @@ scale = Vector2(0.1, 0.1)
 shape = SubResource("CircleShape2D_t2yc1")
 target_position = Vector2(0, 0)
 collide_with_areas = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Menu" parent="CanvasLayer" instance=ExtResource("363_hloh5")]
+visible = false
+anchors_preset = -1
+offset_left = 309.0
+offset_top = 106.0
+offset_right = -269.0
+offset_bottom = -112.0
 
 [connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]

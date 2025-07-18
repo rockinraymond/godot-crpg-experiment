@@ -17,9 +17,10 @@ extends CharacterBody2D
 ## to only see interactable objects
 @export var shapecast: ShapeCast2D
 
+
 var _delay_timer = Timer.new()
 var _queued_interact = false
-
+var menuOpen = false
 var last_direction = Vector2(1, 0)
 
 var anim_directions = {
@@ -79,6 +80,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		_delay_timer.start()
 	if event.is_action_released(pathfind_action):
 		_delay_timer.stop()
+	if event.is_action_pressed("menu"):
+		if menuOpen == false:
+				menuOpen = true
+				$CanvasLayer/Menu.show()
+		else:
+				menuOpen = false
+				$CanvasLayer/Menu.hide()
 
 ## Called when the player clicks the pathfinding action, attempts to find a new path,
 ## or interact with an object if hovering over one
