@@ -1,4 +1,4 @@
-[gd_scene load_steps=372 format=3 uid="uid://bb25ucwik0mxf"]
+[gd_scene load_steps=373 format=3 uid="uid://bb25ucwik0mxf"]
 
 [ext_resource type="Script" uid="uid://unssa7uaur7h" path="res://characters/scenes/human/player-human.gd" id="1_njo2g"]
 [ext_resource type="Texture2D" uid="uid://coc1t37fm3qu2" path="res://characters/sprites/BaseHumanMale/1_Idle_CAM2_20.png" id="2_njo2g"]
@@ -363,6 +363,7 @@
 [ext_resource type="Texture2D" uid="uid://c4b3mdi336skl" path="res://characters/sprites/PatchworkPants/5_Walk_CAM4_200.png" id="361_li7qt"]
 [ext_resource type="Script" uid="uid://3p83fec76pdq" path="res://characters/scenes/human/camera_zoom.gd" id="362_t2yc1"]
 [ext_resource type="PackedScene" uid="uid://cq5bfyaeni3hr" path="res://gui/InGameMenu.tscn" id="363_hloh5"]
+[ext_resource type="Texture2D" uid="uid://dmlx6wneilkn0" path="res://gui/paper background.png" id="365_4o78w"]
 
 [sub_resource type="Gradient" id="662"]
 offsets = PackedFloat32Array(0.00558659, 0.441341, 0.659218)
@@ -1766,4 +1767,14 @@ collide_with_areas = true
 [node name="InGameMenu" parent="." instance=ExtResource("363_hloh5")]
 visible = false
 
+[node name="ContextMenu" type="PopupMenu" parent="."]
+visible = true
+always_on_top = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ContextMenu"]
+z_index = -1
+position = Vector2(62, 32)
+texture = ExtResource("365_4o78w")
+
 [connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]
+[connection signal="popup_hide" from="ContextMenu" to="." method="_on_context_menu_popup_hide"]

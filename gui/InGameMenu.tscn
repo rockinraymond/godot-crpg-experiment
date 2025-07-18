@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://cq5bfyaeni3hr"]
+[gd_scene load_steps=8 format=3 uid="uid://cq5bfyaeni3hr"]
 
+[ext_resource type="FontFile" uid="uid://k0aj7x5x5bwi" path="res://gui/alagard_by_pix3m-d6awiwp.ttf" id="1_2ga52"]
 [ext_resource type="Script" uid="uid://djq7jsg3aods0" path="res://gui/char_name_label.gd" id="1_qhd0x"]
+[ext_resource type="Texture2D" uid="uid://dmlx6wneilkn0" path="res://gui/paper background.png" id="2_756jc"]
+[ext_resource type="Texture2D" uid="uid://t3ioqtoohp2" path="res://gui/RPG_GUI_v1.png" id="3_xukyn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xukyn"]
+texture = ExtResource("2_756jc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7cagx"]
+texture = ExtResource("3_xukyn")
+region_rect = Rect2(41, 206, 229, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ap0r7"]
+texture = ExtResource("3_xukyn")
+region_rect = Rect2(40, 127, 230, 50)
 
 [node name="InGameMenu" type="CanvasLayer"]
 
@@ -19,10 +33,13 @@ offset_left = 303.0
 offset_top = 95.0
 offset_right = 871.0
 offset_bottom = 525.0
-current_tab = 1
+theme_override_fonts/font = ExtResource("1_2ga52")
+theme_override_styles/panel = SubResource("StyleBoxTexture_xukyn")
+theme_override_styles/tab_selected = SubResource("StyleBoxTexture_7cagx")
+theme_override_styles/tab_unselected = SubResource("StyleBoxTexture_ap0r7")
+current_tab = 0
 
 [node name="Character" type="Panel" parent="Menu/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -36,6 +53,7 @@ text = "Name:"
 script = ExtResource("1_qhd0x")
 
 [node name="Inventory" type="Panel" parent="Menu/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

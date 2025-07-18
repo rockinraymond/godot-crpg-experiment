@@ -4,7 +4,8 @@ enum PlayerState {
 	IDLE,
 	MOVING,
 	INTERACTING,
-	MENU_OPEN
+	MENU_OPEN,
+	CONTEXT_MENU
 }
 
 @export var movement_speed: float = 150
@@ -64,6 +65,17 @@ func _ready():
 	_delay_timer.wait_time = pathfind_hold_delay
 	add_child(_delay_timer)
 	_delay_timer.timeout.connect(_on_timeout)
+	$ContextMenu.connect("id_pressed", Callable(self, "_on_context_menu_id_pressed"))
+	$ContextMenu.connect("popup_hide", Callable(self, "_on_context_menu_closed"))
+	$ContextMenu.hide()
+	
+	# Setup context menu
+	$ContextMenu.clear()
+	$ContextMenu.add_item("Move to", 0)
+	$ContextMenu.add_item("Examine", 1)
+	$ContextMenu.add_item("Interact/Attack", 2)
+	$ContextMenu.connect("id_pressed", Callable(self, "_on_context_menu_id_pressed"))
+	$ContextMenu.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if state == PlayerState.MENU_OPEN:
@@ -72,6 +84,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			$InGameMenu.hide()
 		return
 
+	if event.is_action_pressed(context_action):
+		_show_context_menu(get_viewport().get_mouse_position())
+		return
+
+	if state == PlayerState.CONTEXT_MENU:
+		return
 	if event.is_action_pressed(pathfind_action):
 		_try_click()
 		_delay_timer.start()
@@ -80,6 +98,39 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
 		_change_state(PlayerState.MENU_OPEN)
 		$InGameMenu.show()
+
+func _show_context_menu(pos: Vector2):
+	state = PlayerState.CONTEXT_MENU
+	$ContextMenu.set_position(pos)
+	$ContextMenu.show()
+	$ContextMenu.grab_focus()
+
+func _on_context_menu_id_pressed(id):
+	$ContextMenu.hide()
+	if id == 0:
+		# Move to clicked location
+		nav_agent.set_target_position(get_global_mouse_position())
+		_change_state(PlayerState.MOVING)
+	elif id == 1:
+		# Examine clicked object (if any)
+		shapecast.global_position = get_global_mouse_position()
+		shapecast.force_shapecast_update()
+		if shapecast.is_colliding():
+			var collider = shapecast.get_collider(0)
+			if "examine" in collider:
+				collider.examine()
+		_change_state(PlayerState.IDLE)
+	elif id == 2:
+		# Interact/Attack clicked object (if any)
+		shapecast.global_position = get_global_mouse_position()
+		shapecast.force_shapecast_update()
+		if shapecast.is_colliding():
+			var collider = shapecast.get_collider(0)
+			if "interact" in collider:
+				collider.interact()
+		_change_state(PlayerState.IDLE)
+	else:
+		_change_state(PlayerState.IDLE)
 
 func _try_click():
 	_queued_interact = false
@@ -126,10 +177,8 @@ func _physics_process(_delta):
 				update_animation("idle")
 		PlayerState.INTERACTING:
 			update_animation("idle")
-			# State returns to idle after interaction
 			_change_state(PlayerState.IDLE)
-		PlayerState.MENU_OPEN:
-			# Stop movement and ignore physics while menu open
+		PlayerState.MENU_OPEN, PlayerState.CONTEXT_MENU:
 			set_velocity(Vector2.ZERO)
 			move_and_slide()
 			update_animation("idle")
@@ -148,3 +197,7 @@ func _change_state(new_state: PlayerState):
 	if state == new_state:
 		return
 	state = new_state
+
+
+func _on_context_menu_popup_hide() -> void:
+	_change_state(PlayerState.IDLE)
